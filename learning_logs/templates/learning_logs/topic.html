@@ -1,28 +1,36 @@
 {% extends "learning_logs/base.html" %}
 
+{% block header %}
+  <h2>{{ topic }}</h2>
+{% endblock header %}
+
 {% block content %}
 
-  <p>Topic: {{ topic }}</p>
-
-  <p>Entries:</p>
   <p>
-    <a href="{% url 'learning_logs:new_entry' topic.id %}">Add new entry</a>
+    <input type="button" class="btn btn-primary" value="Add a new entry"  onClick='location.href="/new_entry/{{ topic.id }}"'>
   </p>
-  <ul>
-    {% for entry in entries %}
-    <li>
-    <p>{{ entry.date_added}}<p/>
-    <p>{{ entry.text|linebreaks }}</p>
-      <p>
-        <a href="{% url 'learning_logs:edit_entry' entry.id %}">Edit entry</a>
-      </p>
-      </li>
+
+  {% for entry in entries %}
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3>
+          {{ entry.date_added}}
+            <input type="button" class="btn btn-primary" value="Edit entry" onClick='location.href="/edit_entry/{{ entry.id }}"'>
+
+        </h3>
+      </div>
+      <div class="panel-body">
+        {{ entry.text|linebreaks }}
+      </div>
+
+    </div> <!-- panel -->
     {% empty %}
       <li>
         There are no entries for this topic yet
       </li>
     {% endfor %}
   </ul>
+
 
 
 {% endblock content %}
