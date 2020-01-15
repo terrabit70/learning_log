@@ -144,7 +144,7 @@ if os.getcwd() == '/app':
     ALLOWED_HOSTS = ['*']
 
     #Конфигурация статических ресурсов
-    BASE_DIR = os.path.dirname(path=os.path.abspath(__file__))
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
     STATIC_ROOT = 'staticfiles'
     STATICFILES_DIRS = (
         os.path.join(BASE_DIR, 'static')
