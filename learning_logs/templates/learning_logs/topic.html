@@ -1,7 +1,7 @@
 {% extends "learning_logs/base.html" %}
 
 {% block header %}
-  <h2>{{ topic }}</h2>
+  <h2>{{ topic }}  <input type="button" class="btn btn-primary" value="del"  onClick='location.href="/topics/{{ topic.id }}/delete"'></h2>
 {% endblock header %}
 
 {% block content %}
@@ -16,7 +16,7 @@
         <h3>
           {{ entry.date_added}}
             <input type="button" class="btn btn-primary" value="Edit entry" onClick='location.href="/edit_entry/{{ entry.id }}"'>
-
+            <input type="button" class="btn btn-primary" value="del entry" onClick='location.href="/del_entry/{{ entry.id }}"'>
         </h3>
       </div>
       <div class="panel-body">

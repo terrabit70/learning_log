@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponseRedirect, Http404
 from django.urls import reverse
 from .models import Topic, Entry
@@ -47,6 +47,13 @@ def new_topic(request):
     return render(request=request, template_name='learning_logs/new_topic.html', context=context)
 
 @login_required
+def delete_topic(request, topic_id):
+    """delete an existing topic (works only for empty topics)"""
+    del_topic = get_object_or_404(Topic, id=topic_id)
+    del_topic.delete()
+    return redirect('/topics')
+
+@login_required
 def new_entry(request, topic_id):
     """Adds a new entry for the topic"""
     topic = Topic.objects.get(id=topic_id)
@@ -79,10 +86,19 @@ def edit_entry(request, entry_id):
     context = {'entry': entry, 'topic': topic, 'form': form}
     return render(request=request, template_name='learning_logs/edit_entry.html', context=context)
 
-
-
-
-
+@login_required
+def delete_entry(request, entry_id):
+    """delete an existing entry"""
+    entry = Entry.objects.get(id=entry_id)
+    topic = entry.topic
+    if topic.owner != request.user:
+        raise Http404
+    if request.method != 'POST':
+        form = EntryForm(instance=entry)
+    else:
+        form = EntryForm(instance=entry, data=request.POST)
+    entry.delete()
+    return HttpResponseRedirect(reverse(viewname='learning_logs:topic', args=[topic.id]))
 
 
 
