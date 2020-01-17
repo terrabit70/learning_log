@@ -48,9 +48,14 @@ def new_topic(request):
 
 @login_required
 def delete_topic(request, topic_id):
-    """delete an existing topic (works only for empty topics)"""
-    del_topic = get_object_or_404(Topic, id=topic_id)
-    del_topic.delete()
+    """delete an existing topic"""
+    topic = get_object_or_404(Topic, id=topic_id)
+    print(topic.id)
+    entries = topic.entry_set.all()
+    for entry in entries:
+        print(entry.id)
+        delete_entry(request, entry.id)
+    topic.delete()
     return redirect('/topics')
 
 @login_required
